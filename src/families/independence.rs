@@ -1,7 +1,7 @@
 use nalgebra::{DVector, DMatrix};
 use rand::thread_rng;
-use rand_distr::Distribution;
-use rand_distr::Uniform;
+use rand::distributions::Distribution;
+use statrs::distribution::Uniform;
 use crate::traits::Copula;
 use crate::error::{Result, CopulaError};
 
@@ -57,7 +57,7 @@ impl Copula for IndependenceCopula {
 
     fn sample(&self, n: usize) -> Result<DMatrix<f64>> {
         let mut rng = thread_rng();
-        let dist = Uniform::new(0.0, 1.0);
+        let dist = Uniform::new(0.0,1.0).unwrap();
         let samples = DMatrix::from_fn(n, self.dimension, |_, _| dist.sample(&mut rng));
 
         
@@ -68,7 +68,7 @@ impl Copula for IndependenceCopula {
         DVector::zeros(0) // No parameters
     }
     
-    fn set_parameters(&mut self, params: &DVector<f64>) -> Result<()> {
+    fn set_parameters(&mut self, _params: &DVector<f64>) -> Result<()> {
         Ok(()) // No parameters to set
     }
     
